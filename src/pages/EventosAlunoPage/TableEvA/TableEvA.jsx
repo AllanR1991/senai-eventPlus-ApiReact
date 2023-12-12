@@ -27,7 +27,6 @@ const Table = ({ dados, fnConnect = null, fnShowModal = null }) => {
       </thead>
       <tbody>
         {dados.map((e) => {
-          //console.log("e = ",e)
           return (
             <tr className="tbal-data__head-row" key={Math.random()}>
               <td className="tbal-data__data tbal-data__data--big">
@@ -60,7 +59,7 @@ const Table = ({ dados, fnConnect = null, fnShowModal = null }) => {
                           fnConnect(
                             e.idEvento,
                             e.situacao ? "unconnect" : "connect",
-                            e.idPresencasEvento //parâmetro opcional
+                            e.idPresencaEvento //parâmetro opcional
                           );
                         }
                       : () => {

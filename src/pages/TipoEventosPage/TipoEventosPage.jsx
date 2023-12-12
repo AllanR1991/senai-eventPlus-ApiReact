@@ -30,7 +30,7 @@ const TipoEventosPage = () => {
       try {
         const retorno = await api.get(eventsTypeResource);
         setTipoEventos(retorno.data);
-        console.log(retorno.data);
+        //console.log(retorno.data);
       } catch (error) {
         console.log("Erro na api");
         console.log(error);
@@ -101,7 +101,7 @@ const TipoEventosPage = () => {
     try {
       const retorno = await api.get(`${eventsTypeResource}/${idElement}`);
       setTitulo(retorno.data.tipoEvento);
-      console.log(retorno.data);
+      //console.log(retorno.data);
     } catch (error) {}
     setShowSpinner(false);
   }

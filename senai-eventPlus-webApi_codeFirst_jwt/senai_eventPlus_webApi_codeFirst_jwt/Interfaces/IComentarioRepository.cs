@@ -28,7 +28,7 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Interfaces
         /// Lista todos os comentário cadastrados.
         /// </summary>
         /// <returns>Lista de comentário.</returns>     
-        public List<ComentarioEventoDTO> Listartodos();
+        public List<Comentario> Listartodos();
 
         /// <summary>
         /// Lista um único comentário.

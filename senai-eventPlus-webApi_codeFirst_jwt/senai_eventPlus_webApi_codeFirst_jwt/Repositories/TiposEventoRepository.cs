@@ -46,7 +46,7 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Repositories
 
         public List<TiposEvento> Listartodos()
         {
-            return context.TiposEvento.ToList();
+            return context.TiposEvento.OrderBy(tp=> tp.tipoEvento).ToList();
         }
     }
 }

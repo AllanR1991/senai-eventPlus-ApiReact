@@ -37,8 +37,6 @@ const EventosAlunoPage = () => {
   const [idEvento, setIdEvento] = useState("");
   const [idComentario, setIdComentario] = useState(null);
 
-  const dadosLocalStorage = JSON.parse(localStorage.getItem('token'));
-
   useEffect(() => {
     loadEventsType();
   }, [tipoEvento, userData.userId]); //
@@ -51,7 +49,7 @@ const EventosAlunoPage = () => {
       try {
         const todosEventos = await api.get(eventsResource);
         const meusEventos = await api.get(
-          `${myEventsResource}/${dadosLocalStorage.userId}`
+          `${myEventsResource}/${userData.userId}`
         );
 
         const eventosMarcados = verificaPresenca(
@@ -81,28 +79,25 @@ const EventosAlunoPage = () => {
        * Lista os meus eventos (PresencasEventos)
        * retorna um formato diferente de array
        */
-      //console.log("USerData ID = ", userData.userId);
       try {
         const retornoEventos = await api.get(
-          `${myEventsResource}/${dadosLocalStorage.userId}`
+          `${myEventsResource}/${userData.userId}`
         );
         // console.clear();
-        // console.log("MINHAS PRESENÇAS");
-        // console.log(retornoEventos.data);
+        console.log("MINHAS PRESENÇAS");
+        console.log(retornoEventos.data);
 
         const arrEventos = []; //array vazio
-        
-        //console.log("retornoEventos", retornoEventos)
+
         retornoEventos.data.forEach((e) => {
-          //console.log("e = ",e)
           arrEventos.push({
             ...e.evento,
             situacao: e.situacao,
-            idPresencasEvento: e.idPresencasEvento,
+            idPresencaEvento: e.idPresencasEvento,
           });
         });
 
-        //console.log(arrEventos);
+        // console.log(arrEventos);
         setEventos(arrEventos);
       } catch (error) {
         //colocar o notification
@@ -121,7 +116,7 @@ const EventosAlunoPage = () => {
         //procurar a correspondência em minhas presenças
         if (arrAllEvents[x].idEvento === eventsUser[i].evento.idEvento) {
           arrAllEvents[x].situacao = true;
-          arrAllEvents[x].idPresencaEvento = eventsUser[i].idPresencaEvento;
+          arrAllEvents[x].idPresencaEvento = eventsUser[i].idPresencasEvento;
           break; //paro de procurar para o evento principal atual
         }
       }
@@ -211,15 +206,12 @@ const EventosAlunoPage = () => {
   };
 
   async function handleConnect(eventId, whatTheFunction, presencaId = null) {
-
-    console.log("Entrou no HandleConnect")
-    console.log(presencaId)
     if (whatTheFunction === "connect") {
       try {
         //connect
         const promise = await api.post(presencesEventResource, {
           situacao: true,
-          idUsuario: dadosLocalStorage.userId,
+          idUsuario: userData.userId,
           idEvento: eventId,
         });
 

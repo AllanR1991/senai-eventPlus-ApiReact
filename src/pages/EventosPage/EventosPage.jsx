@@ -93,6 +93,7 @@ export default function EventosPaage(props) {
           descricao: frmEditData.descricao,
           idInstituicao: frmEditData.idInstituicao,
           idTipoEvento: frmEditData.idTipoEvento,
+          horarioEvento: "00:00:00"
         }
       );
 

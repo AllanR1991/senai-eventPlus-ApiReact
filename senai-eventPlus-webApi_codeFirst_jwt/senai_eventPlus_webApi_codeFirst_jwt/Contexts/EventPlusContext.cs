@@ -23,6 +23,13 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Contexts
         {
             optionsBuilder.UseSqlServer("Server = ALLANR1991-DESK\\SQLEXPRESS; Database = EventPlus_CodeFirst; User Id = sa; pwd = 123456; TrustServerCertificate=True;");
             base.OnConfiguring(optionsBuilder);
+
+            //string conexão nuvem Azure
+            /*
+            optionsBuilder.UseSqlServer("Server=tcp:eventmanhagabriel-server.database.windows.net,1433;Initial " +
+                "Catalog=eventmanhadatabasegabriel;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;User Id= eventmanhagabriel-server; Pwd= Senai@134");
+            base.OnConfiguring(optionsBuilder);
+            */
         }
 
         //  Configurando dados presetados nos banco de dados.

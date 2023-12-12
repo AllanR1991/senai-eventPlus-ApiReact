@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Azure.CognitiveServices.ContentModerator;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using senai_eventPlus_webApi_codeFirst_jwt.Controllers;
@@ -74,6 +75,8 @@ builder.Services.AddSwaggerGen(options =>
         }*/
     });
 
+    options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+
     // using System.Reflection;
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
@@ -116,25 +119,39 @@ builder.Services.AddCors(options =>
         });
 });
 
+//configuração do serviço de moderação de conteúdo - Azure
+builder.Services.AddSingleton(provider => new ContentModeratorClient(
+    new ApiKeyServiceClientCredentials("08b68a7877d04057b0f422ef73023387"))
+{
+    Endpoint = "https://eventmoderator-allanrs.cognitiveservices.azure.com/"
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+//Alterar dados do Swagger para a seguinte configuração
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-        {
-            options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-            options.RoutePrefix = string.Empty;
-        }
-    );
+    app.UseDeveloperExceptionPage();
 }
+
+app.UseSwagger(options =>
+{
+    options.SerializeAsV2 = true;
+});
+// Configure the HTTP request pipeline.
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    //options.RoutePrefix = string.Empty;
+});
 
 app.UseCors("CorsPolicy");
 
+app.UseRouting();
+
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseAuthentication();
 
 app.UseAuthorization();
 

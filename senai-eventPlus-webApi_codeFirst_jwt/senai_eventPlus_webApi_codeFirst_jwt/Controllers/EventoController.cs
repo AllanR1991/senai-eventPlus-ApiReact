@@ -43,6 +43,27 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Controllers
         }
 
         /// <summary>
+        /// Lista todos os eventos que tem a dataEvento > hoje.
+        /// </summary>
+        /// <returns>Retorna um status code 200</returns>
+        /// <response code="200">Lista proximos eventos exíbido com sucesso.</response>
+        /// <response code="400">Não foi possivel exíbir a lista de proximos eventos.</response>
+        [HttpGet("ListarProximos")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult ProximosEventos()
+        {
+            try
+            {
+                return Ok(_evento.ListarProximos());
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        /// <summary>
         /// Lista um Evento.
         /// </summary>
         /// <param name="id">Id Utilizada para buscar o Evento.</param>
@@ -65,18 +86,7 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Controllers
         }
 
 
-        [HttpGet("ListarProximos")]
-        public IActionResult GetNextEvents()
-        {
-            try
-            {
-                return Ok( _evento.ListarProximos());
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
+        
         /// <summary>
         /// Cadastra um novo Evento.
         /// </summary>

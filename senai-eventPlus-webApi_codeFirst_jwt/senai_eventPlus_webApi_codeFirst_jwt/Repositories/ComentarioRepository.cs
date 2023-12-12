@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client.Extensibility;
 using senai_eventPlus_webApi_codeFirst_jwt.Contexts;
 using senai_eventPlus_webApi_codeFirst_jwt.Domains;
 using senai_eventPlus_webApi_codeFirst_jwt.DTO;
@@ -57,10 +58,10 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Repositories
         {
             return context.Comentario
                 .Select(c => new Comentario
-                {
+                {                    
                     descricao = c.descricao,
                     exibe = c.exibe,
-                    
+                                       
                     usuario = new Usuario
                     {
                         nome = c.usuario.nome
@@ -68,22 +69,35 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Repositories
 
                     evento = new Evento 
                     {
-                        nomeEvento = c.evento.nomeEvento,
+                        nomeEvento = c.evento.nomeEvento,                        
                     }
 
                 }).FirstOrDefault(c => c.idComentario == id)!;
         }
 
-        public List<ComentarioEventoDTO> Listartodos()
+        public List<Comentario> Listartodos()
         {
             return context.Comentario
-                .Select(c => new ComentarioEventoDTO
+                .Select(c => new Comentario
                 {
-                    Descricao = c.descricao,
-                    Exibe = c.exibe,
-                    NomeUsuario = c.usuario.nome,
-                    NomeEvento = c.evento.nomeEvento
-                }).ToList();            
+                    idComentario = c.idComentario,
+                    descricao = c.descricao,
+                    exibe = c.exibe,
+                    idUsuario = c.idUsuario,
+                    idEvento = c.idEvento,
+
+                    usuario = new Usuario
+                    {
+                        nome = c.usuario.nome
+                    },
+
+                    evento = new Evento
+                    {
+                        nomeEvento = c.evento.nomeEvento,
+                        idEvento = c.evento.idEvento,
+                    }
+
+                }).ToList();
         }
 
 
@@ -102,7 +116,8 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Repositories
 
                         usuario = new Usuario
                         {
-                            nome = c.usuario!.nome
+                            nome = c.usuario!.nome,
+                            idUsuario = c.usuario.idUsuario
                         },
 
                         evento = new Evento
@@ -111,6 +126,38 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Repositories
                         }
 
                     }).FirstOrDefault(c => c.idUsuario == idUsuario && c.idEvento == idEvento)!;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<Comentario> ListarSomenteExibe()
+        {
+            try
+            {
+                return context.Comentario
+                    .Select(c => new Comentario
+                    {
+                        idComentario = c.idComentario,
+                        descricao = c.descricao,
+                        exibe = c.exibe,
+                        idUsuario = c.idUsuario,
+                        idEvento = c.idEvento,
+
+                        usuario = new Usuario
+                        {
+                            nome = c.usuario!.nome                            
+                        },
+
+                        evento = new Evento
+                        {
+                            nomeEvento = c.evento!.nomeEvento,
+                            idEvento = c.evento.idEvento
+                        }
+
+                    }).Where(c => c.exibe == true).ToList();
             }
             catch (Exception)
             {

@@ -14,11 +14,11 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Controllers
     [ApiController]
     public class TiposUsuarioController : ControllerBase
     {
-        private ITiposUsuarioRepository tiposUsuario { get; set; }
+        private ITiposUsuarioRepository _tiposUsuario { get; set; }
 
         public TiposUsuarioController()
         {
-            tiposUsuario = new TiposUsuarioRepository();
+            _tiposUsuario = new TiposUsuarioRepository();
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Controllers
         {
             try
             {
-                return StatusCode(200, tiposUsuario.Listartodos());
+                return StatusCode(200, _tiposUsuario.Listartodos());
             }
             catch (Exception)
             {
@@ -56,7 +56,7 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Controllers
         {
             try
             {
-                return StatusCode(200, tiposUsuario.ListarPorId(id));
+                return StatusCode(200, _tiposUsuario.ListarPorId(id));
             }
             catch (Exception)
             {
@@ -80,7 +80,7 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Controllers
         {
             try
             {
-                tiposUsuario.Cadastrar(novoTipoUsuario);
+                _tiposUsuario.Cadastrar(novoTipoUsuario);
                 return StatusCode(201);
             }
             catch (Exception erro)
@@ -106,10 +106,10 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Controllers
 
             try
             {
-                TiposUsuario tiposUsuarioEncontrado = tiposUsuario.ListarPorId(id);
+                TiposUsuario tiposUsuarioEncontrado = _tiposUsuario.ListarPorId(id);
                 if (tiposUsuarioEncontrado != null)
                 {
-                    tiposUsuario.Deletar(id);
+                    _tiposUsuario.Deletar(id);
                     return StatusCode(204);
                 }
                 return StatusCode(404, "tipos usuário não encontrado.");
@@ -139,10 +139,10 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Controllers
         {
             try
             {
-                TiposUsuario tiposUsuarioEncontrado = tiposUsuario.ListarPorId(id);
+                TiposUsuario tiposUsuarioEncontrado = _tiposUsuario.ListarPorId(id);
                 if (tiposUsuarioEncontrado != null)
                 {
-                    tiposUsuario.Alterar(id, tiposUsuarioAlterado);
+                    _tiposUsuario.Alterar(id, tiposUsuarioAlterado);
                     return StatusCode(204);
                 }
                 return StatusCode(404, "tipos usuário não encontrado.");

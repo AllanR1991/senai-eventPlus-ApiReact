@@ -39,7 +39,6 @@ const Table = ({ dados, fnDelete = null, fnUpdate = null }) => {
       </thead>
       <tbody>
         {dados.map((tp) => {
-          console.log("TP = ",tp)
           return (
             <tr className="table-data__head-row" key={tp.idEvento}>
               <td className="table-data__data table-data__data--big">

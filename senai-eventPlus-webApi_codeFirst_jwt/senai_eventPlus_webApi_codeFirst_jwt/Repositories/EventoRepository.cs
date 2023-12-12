@@ -75,6 +75,7 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Repositories
                     dataEvento = e.dataEvento,
                     nomeEvento = e.nomeEvento,
                     descricao = e.descricao,
+                    idTipoEvento = e.idTipoEvento,
                     tipoEvento = new TiposEvento
                     {
                         idTiposEvento = e.idTipoEvento,
@@ -83,6 +84,7 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Repositories
                     idInstituicao = e.idInstituicao,
                     instituicao = new Instituicao
                     {
+                        idInstituicao = e.idInstituicao,
                         nomeFantasia = e.instituicao!.nomeFantasia
                     }
                 }).ToList();
@@ -99,7 +101,7 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Repositories
             try
             {
                 return context.Evento
-                    .Where(e => e.dataEvento > DateTime.Now).ToList();
+                    .Where(e => e.dataEvento > DateTime.Now).OrderBy(e => e.dataEvento).ToList();
             }
             catch (Exception)
             {

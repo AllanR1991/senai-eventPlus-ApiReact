@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.CognitiveServices.ContentModerator;
 using senai_eventPlus_webApi_codeFirst_jwt.Domains;
 using senai_eventPlus_webApi_codeFirst_jwt.Interfaces;
 using senai_eventPlus_webApi_codeFirst_jwt.Repositories;
+using System.Text;
 
 namespace senai_eventPlus_webApi_codeFirst_jwt.Controllers
 {
@@ -14,11 +16,26 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Controllers
     [ApiController]
     public class ComentarioController : ControllerBase
     {
+        /*
         private IComentarioRepository _comentario { get; set; }
 
         public ComentarioController()
         {
             _comentario = new ComentarioRepository();
+        }*/
+
+        ComentarioRepository _comentario = new ComentarioRepository();
+
+        //armazena dados da API externa(IA -Azure)
+        private readonly ContentModeratorClient _contentModeratorClient;
+
+        /// <summary>
+        /// Construtor que recebe os dados necessarios para acesso ao servico externo
+        /// </summary>
+        /// <param name="contentModeratorClient">objeto do tipo ContentModeratorClient</param>
+        public ComentarioController(ContentModeratorClient contentModeratorClient)
+        {
+            _contentModeratorClient = contentModeratorClient;
         }
 
         /// <summary>
@@ -65,12 +82,12 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Controllers
         }
 
         /// <summary>
-        /// Lista um comentário.
+        /// Lista um comentário de um usuario em um evento.
         /// </summary>
         /// <param name="id">Id Utilizada para buscar o comentário.</param>
         /// <returns>Retorna status code 200</returns>
-        /// <response code="200">Lista de comentário exíbido com sucesso.</response>
-        /// <response code="400">Não foi possivel exíbir a lista.</response>
+        /// <response code="200">Comentário exíbido com sucesso.</response>
+        /// <response code="400">Não foi possivel exíbir Comentario.</response>
         [HttpGet("BuscaIdUsuarioIdEvento")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -87,6 +104,26 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Controllers
         }
 
 
+        /// <summary>
+        /// Lista todos os comentarios com a opção exibe = True
+        /// </summary>
+        /// <returns>Retorna status code 200</returns>
+        /// <response code="200">Listado comenterios sem ofensas.</response>
+        /// <response code="400">Não foi possivel exíbir comentarios sem ofensas.</response>
+        [HttpGet("ListarSomenteExibe")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult ListaExibe()
+        {            
+            try
+            {
+                return Ok(_comentario.ListarSomenteExibe());
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         /// <summary>
         /// Cadastra um novo comentário.
@@ -108,6 +145,54 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Controllers
             catch (Exception erro)
             {
                 return StatusCode(400, erro);
+            }
+        }
+
+        
+        /// <summary>
+        /// Verifica se tem palavras ofensivas no comentario e salva como exibe ou nao o comentario.
+        /// </summary>
+        /// <param name="novoComentario"></param>
+        /// <returns>Status code 201 se for criado.</returns>
+        /// <response code="201">Criado comentario com sucesso.</response>
+        /// <response code="400">Erro ao tentar criar comentario</response>
+        [HttpPost("ComentarioIA")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> ComentarioIA(Comentario novoComentario)
+        {
+            try
+            {
+                //if((comentario.Descricao).IsNullOrEmpty != null)
+                //if (comentario.Descricao != null || comentario.Descricao == "")
+                if (string.IsNullOrEmpty(novoComentario.descricao))
+                {
+                    return BadRequest("A descricao do comentario nao pode estar vazio ou nulo!");
+                }
+                //apos a utilizacao do recurso o using ira fecha-lo
+                //armazena, codifica e prepara o comentario
+                using var stream = new MemoryStream(Encoding.UTF8.GetBytes(novoComentario.descricao));
+
+                var moderationResult = await _contentModeratorClient.TextModeration
+                .ScreenTextAsync("text/plain", stream, "por", false, false, null, true);
+
+                if (moderationResult.Terms != null)
+                {
+                    novoComentario.exibe = false;
+                    _comentario.Cadastrar(novoComentario);
+                }
+                else
+                {
+                    novoComentario.exibe = true;
+                    _comentario.Cadastrar(novoComentario);
+                }
+
+                return StatusCode(201, novoComentario);
+
+            }
+            catch (Exception error)
+            {
+                return BadRequest(error.Message);
             }
         }
 
