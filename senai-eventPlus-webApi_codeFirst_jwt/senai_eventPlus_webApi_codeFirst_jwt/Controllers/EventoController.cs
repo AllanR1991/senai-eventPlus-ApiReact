@@ -64,6 +64,27 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Controllers
         }
 
         /// <summary>
+        /// Lista todos os eventos que tem a dataEvento < hoje.
+        /// </summary>
+        /// <returns>Retorna um status code 200</returns>
+        /// <response code="200">Lista eventos anteriores exíbido com sucesso.</response>
+        /// <response code="400">Não foi possivel exíbir a lista de proximos eventos.</response>
+        [HttpGet("ListarEventosAnteriores")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult EventosAnteriores()
+        {
+            try
+            {
+                return Ok(_evento.ListarEventosAnteriores());
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        /// <summary>
         /// Lista um Evento.
         /// </summary>
         /// <param name="id">Id Utilizada para buscar o Evento.</param>

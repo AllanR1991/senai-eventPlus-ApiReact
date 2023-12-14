@@ -36,6 +36,17 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Interfaces
         /// <returns>Retorna um objeto do tipo evento.</returns>
         public Evento ListarPorId(Guid id);
 
+
+        /// <summary>
+        /// Lista proximos eventos
+        /// </summary>
+        /// <returns>Retorna uma lista com eventos que irão ocorrer.</returns>
         List<Evento> ListarProximos();
+
+        /// <summary>
+        /// Lista eventos que ja ocorreram.
+        /// </summary>
+        /// <returns>Retorna uma lista com eventos que ja ocorreu.</returns>
+        List<Evento> ListarEventosAnteriores();
     }
 }

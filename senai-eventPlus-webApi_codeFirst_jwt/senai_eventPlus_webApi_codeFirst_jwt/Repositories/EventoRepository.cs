@@ -109,5 +109,18 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Repositories
             }
         }
 
+        public List<Evento> ListarEventosAnteriores()
+        {
+            try
+            {
+                return context.Evento
+                    .Where(e => e.dataEvento < DateTime.Now).OrderBy(e => e.dataEvento).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

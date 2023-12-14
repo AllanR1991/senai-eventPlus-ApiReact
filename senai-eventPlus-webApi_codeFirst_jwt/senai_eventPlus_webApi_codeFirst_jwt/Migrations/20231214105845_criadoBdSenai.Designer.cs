@@ -12,8 +12,8 @@ using senai_eventPlus_webApi_codeFirst_jwt.Contexts;
 namespace senai_eventPlus_webApi_codeFirst_jwt.Migrations
 {
     [DbContext(typeof(EventPlusContext))]
-    [Migration("20231212215159_newDb")]
-    partial class newDb
+    [Migration("20231214105845_criadoBdSenai")]
+    partial class criadoBdSenai
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,11 +55,11 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Migrations
                     b.HasData(
                         new
                         {
-                            idComentario = new Guid("8de11d50-499a-4e13-80e4-2b3dc7b56fc6"),
+                            idComentario = new Guid("88de2103-3dc3-42b6-a781-8e604bc6c970"),
                             descricao = "Excelente evento",
                             exibe = true,
-                            idEvento = new Guid("a7adc136-2755-42c4-84a0-6a9a26138684"),
-                            idUsuario = new Guid("80648e63-32b2-4c81-9ee6-ba2c4a81b21b")
+                            idEvento = new Guid("d172d66a-72a6-44be-86db-cd78ccd3a9c3"),
+                            idUsuario = new Guid("3c06d1ee-e3a2-4597-a843-5610f7c4e664")
                         });
                 });
 
@@ -101,12 +101,12 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Migrations
                     b.HasData(
                         new
                         {
-                            idEvento = new Guid("a7adc136-2755-42c4-84a0-6a9a26138684"),
+                            idEvento = new Guid("d172d66a-72a6-44be-86db-cd78ccd3a9c3"),
                             dataEvento = new DateTime(2023, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             descricao = "Conceitos básicos do SQL Server, como DDL, DML, DQL.",
                             horarioEvento = new TimeSpan(0, 13, 0, 0, 0),
-                            idInstituicao = new Guid("53383ca1-802c-4a22-b7e4-c5c2ffd75fe1"),
-                            idTipoEvento = new Guid("2bba658f-96b9-4f6c-bdb9-29367200e03f"),
+                            idInstituicao = new Guid("7fd75a5c-0d2d-4cee-b977-3e59231f3cea"),
+                            idTipoEvento = new Guid("4194aaa3-4e6f-46ca-9a15-8d20920e9f86"),
                             nomeEvento = "Introdução ao banco de dados SQL Server"
                         });
                 });
@@ -147,7 +147,7 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Migrations
                     b.HasData(
                         new
                         {
-                            idInstituicao = new Guid("53383ca1-802c-4a22-b7e4-c5c2ffd75fe1"),
+                            idInstituicao = new Guid("7fd75a5c-0d2d-4cee-b977-3e59231f3cea"),
                             cnpj = "1234567891012",
                             endereco = "Rua Niteroi 180",
                             nomeFantasia = "DevSchool",
@@ -181,9 +181,9 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Migrations
                     b.HasData(
                         new
                         {
-                            idPresencasEvento = new Guid("3b749fce-add9-4b64-a5ed-522543cf8b87"),
-                            idEvento = new Guid("a7adc136-2755-42c4-84a0-6a9a26138684"),
-                            idUsuario = new Guid("80648e63-32b2-4c81-9ee6-ba2c4a81b21b"),
+                            idPresencasEvento = new Guid("eeafae0f-e480-4dbe-b2bd-bcac81ceae1f"),
+                            idEvento = new Guid("d172d66a-72a6-44be-86db-cd78ccd3a9c3"),
+                            idUsuario = new Guid("3c06d1ee-e3a2-4597-a843-5610f7c4e664"),
                             situacao = true
                         });
                 });
@@ -209,12 +209,12 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Migrations
                     b.HasData(
                         new
                         {
-                            idTiposEvento = new Guid("2bba658f-96b9-4f6c-bdb9-29367200e03f"),
+                            idTiposEvento = new Guid("4194aaa3-4e6f-46ca-9a15-8d20920e9f86"),
                             tipoEvento = "SQL Server"
                         },
                         new
                         {
-                            idTiposEvento = new Guid("fb3aa9e5-f1bc-46e8-8607-98856997aba0"),
+                            idTiposEvento = new Guid("dc9ae37d-368a-4479-b815-326d4d25dc0e"),
                             tipoEvento = "C#"
                         });
                 });
@@ -240,12 +240,12 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Migrations
                     b.HasData(
                         new
                         {
-                            idTipoUsuario = new Guid("50b39a82-c131-453a-b459-b6ff83f9b56f"),
+                            idTipoUsuario = new Guid("39f8698e-f8a2-4562-bf88-b94c7fa84870"),
                             tipoUsuario = "Administrador"
                         },
                         new
                         {
-                            idTipoUsuario = new Guid("135ceb75-41a8-4231-8c2b-39c03e3eda87"),
+                            idTipoUsuario = new Guid("a4907676-c091-4c49-a583-e1cf61bf7994"),
                             tipoUsuario = "Comum"
                         });
                 });
@@ -286,19 +286,19 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Migrations
                     b.HasData(
                         new
                         {
-                            idUsuario = new Guid("7e0ad881-69ad-4a96-85ee-dd5772505022"),
+                            idUsuario = new Guid("4c23093b-8809-4f6e-97fc-7231e33bde16"),
                             email = "allan@allan.com",
-                            idTipoUsuario = new Guid("50b39a82-c131-453a-b459-b6ff83f9b56f"),
+                            idTipoUsuario = new Guid("39f8698e-f8a2-4562-bf88-b94c7fa84870"),
                             nome = "Allan Rodrigues",
-                            senha = "$2a$11$MRHQETBDTEjYKcGhZ/9vCeT82mdyeRZH/dBNHVJjGnMUTSMteI0t6"
+                            senha = "$2a$11$E.2fjgfCq3GZUuvrI6bZ6eV60RRAsW08VMcRlWIzIVAlAcevD.koa"
                         },
                         new
                         {
-                            idUsuario = new Guid("80648e63-32b2-4c81-9ee6-ba2c4a81b21b"),
+                            idUsuario = new Guid("3c06d1ee-e3a2-4597-a843-5610f7c4e664"),
                             email = "everton@everton.com",
-                            idTipoUsuario = new Guid("135ceb75-41a8-4231-8c2b-39c03e3eda87"),
+                            idTipoUsuario = new Guid("a4907676-c091-4c49-a583-e1cf61bf7994"),
                             nome = "Everton Araujo",
-                            senha = "$2a$11$N/Up7CExckF5DGmJ9ZfXjOm454IRoyYr39jVBwp36UBA4OQBvyadW"
+                            senha = "$2a$11$eMxOzyJSldsrYUOPwfTkeut5XFfCMGrDgrfv9pmUy.qPql/KqnKhq"
                         });
                 });
 
