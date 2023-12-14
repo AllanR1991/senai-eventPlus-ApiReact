@@ -84,8 +84,8 @@ const EventosAlunoPage = () => {
           `${myEventsResource}/${userData.userId}`
         );
         // console.clear();
-        console.log("MINHAS PRESENÇAS");
-        console.log(retornoEventos.data);
+        // console.log("MINHAS PRESENÇAS");
+        // console.log(retornoEventos.data);
 
         const arrEventos = []; //array vazio
 
@@ -93,7 +93,7 @@ const EventosAlunoPage = () => {
           arrEventos.push({
             ...e.evento,
             situacao: e.situacao,
-            idPresencaEvento: e.idPresencasEvento,
+            idPresencasEvento: e.idPresencasEvento,
           });
         });
 
@@ -116,7 +116,7 @@ const EventosAlunoPage = () => {
         //procurar a correspondência em minhas presenças
         if (arrAllEvents[x].idEvento === eventsUser[i].evento.idEvento) {
           arrAllEvents[x].situacao = true;
-          arrAllEvents[x].idPresencaEvento = eventsUser[i].idPresencasEvento;
+          arrAllEvents[x].idPresencasEvento = eventsUser[i].idPresencasEvento;
           break; //paro de procurar para o evento principal atual
         }
       }
@@ -132,12 +132,13 @@ const EventosAlunoPage = () => {
   }
 
   const showHideModal = (idEvent) => {
-    // console.clear();
-    // console.log("id do evento atual");
-    // console.log(idEvent);
+    console.clear();
+    console.log("id do evento atual");
+    console.log(idEvent);
 
     setShowModal(showModal ? false : true);
     // setUserData({ ...userData, idEvento: idEvent });
+    console.log("idEvento dentro do shoehidemodal = ", idEvent);
     setIdEvento(idEvent);
     // console.log("após guardar no state do usuário");
     // console.log(idEvent);
@@ -145,38 +146,49 @@ const EventosAlunoPage = () => {
 
   // ler um comentário - get
   const loadMyCommentary = async (idUsuario, idEvento) => {
-    // console.log("fui chamado");
-
+    //console.log("fui chamado");
+    //console.log("IdUsuario = ", idUsuario);
+    //console.log("idEvento = ", idEvento)
     try {
       // api está retornando sempre todos os comentários do usuário
-      const promise = await api.get(
-        `${commentaryEventResource}?idUsuario=${idUsuario}&idEvento=${idEvento}`
-      );
-
+      const promise = await api.get(`${commentaryEventResource}/BuscaIdUsuarioIdEvento?idUsuario=${idUsuario}&idEvento=${idEvento}`);
+      console.log(promise)
+      setComentario(promise.data.descricao)
+      setIdComentario(promise.data.idComentario)
+      
+      /*
       const myComm = await promise.data.filter(
         (comm) => comm.idEvento === idEvento && comm.idUsuario === idUsuario
       );
-
+      
       // console.log("QUANTIDADE DE DADOS NO ARRAY FILTER");
       // console.log(myComm.length);
       // console.log(myComm);
 
       setComentario(myComm.length > 0 ? myComm[0].descricao : "");
+      
       setIdComentario(myComm.length > 0 ? myComm[0].idComentarioEvento : null);
+      */
     } catch (error) {
-      console.log("Erro ao carregar o evento");
+      console.log("Erro ao carregar comentario do evento");
       console.log(error);
     }
   };
 
   // cadastrar um comentário = post
   const postMyCommentary = async (descricao, idUsuario, idEvento) => {
+    console.log("descrição recebidos do post ",descricao)
+    console.log("idUsuario recebidos do post ",idUsuario)
+    console.log("idEvento recebidos do post ",idEvento)
+
     try {
+      
+      
       const promise = await api.post(commentaryEventResource, {
         descricao: descricao,
         exibe: true,
         idUsuario: idUsuario,
-        idEvento: idEvento,
+        idEvento: idEvento
       });
 
       if (promise.status === 200) {

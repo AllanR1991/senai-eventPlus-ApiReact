@@ -6,7 +6,7 @@ import "./Modal.css";
 
 const Modal = ({
   modalTitle = "Feedback",
-  comentaryText = "Não informado. Não informado. Não informado.",
+  comentaryText = "Sem comentários",
   showHideModal = false,
   fnDelete = null,
   fnGet = null,
@@ -24,8 +24,8 @@ const Modal = ({
   async function carregarDados() {
     await fnGet(userId, idEvento);
   }
-
   return (
+    
     <div className="modal">
       <article className="modal__box">
         <h3 className="modal__title">

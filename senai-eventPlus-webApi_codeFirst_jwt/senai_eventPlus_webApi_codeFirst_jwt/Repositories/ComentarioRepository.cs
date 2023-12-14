@@ -56,23 +56,25 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Repositories
 
         public Comentario ListarPorId(Guid id)
         {
+            //Console.WriteLine("dentro do metodo" + id);
             return context.Comentario
                 .Select(c => new Comentario
-                {                    
+                {
+                    idComentario = c.idComentario,
                     descricao = c.descricao,
                     exibe = c.exibe,
-                                       
+
                     usuario = new Usuario
                     {
-                        nome = c.usuario.nome
+                        nome = c.usuario.nome,
                     },
 
-                    evento = new Evento 
+                    evento = new Evento
                     {
-                        nomeEvento = c.evento.nomeEvento,                        
+                        nomeEvento = c.evento.nomeEvento,
                     }
-
                 }).FirstOrDefault(c => c.idComentario == id)!;
+
         }
 
         public List<Comentario> Listartodos()
@@ -88,14 +90,14 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Repositories
 
                     usuario = new Usuario
                     {
-                        nome = c.usuario.nome
+                        nome = c.usuario.nome,
                     },
 
                     evento = new Evento
                     {
                         nomeEvento = c.evento.nomeEvento,
                         idEvento = c.evento.idEvento,
-                    }
+                    },
 
                 }).ToList();
         }

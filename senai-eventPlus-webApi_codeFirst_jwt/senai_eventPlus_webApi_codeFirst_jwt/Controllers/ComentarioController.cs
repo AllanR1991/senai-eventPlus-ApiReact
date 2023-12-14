@@ -71,6 +71,7 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Controllers
         [ProducesResponseType(400)]
         public IActionResult ListaUm(Guid id)
         {
+            //Console.WriteLine(id);
             try
             {
                 return StatusCode(200, _comentario.ListarPorId(id));

@@ -30,6 +30,8 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Contexts
                 "Catalog=eventmanhadatabasegabriel;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;User Id= eventmanhagabriel-server; Pwd= Senai@134");
             base.OnConfiguring(optionsBuilder);
             */
+
+            //optionsBuilder.UseSqlServer("Server=tcp:eventplus-allanrs-server.database.windows.net,1433;Initial Catalog=eventplus-allanrs;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\"")
         }
 
         //  Configurando dados presetados nos banco de dados.

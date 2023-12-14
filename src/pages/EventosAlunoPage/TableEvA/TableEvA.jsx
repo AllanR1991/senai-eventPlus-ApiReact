@@ -27,6 +27,7 @@ const Table = ({ dados, fnConnect = null, fnShowModal = null }) => {
       </thead>
       <tbody>
         {dados.map((e) => {
+          //console.log("Eventos tabela = ",e)
           return (
             <tr className="tbal-data__head-row" key={Math.random()}>
               <td className="tbal-data__data tbal-data__data--big">
@@ -39,18 +40,13 @@ const Table = ({ dados, fnConnect = null, fnShowModal = null }) => {
               </td>
 
               <td className="tbal-data__data tbal-data__data--big tbal-data__btn-actions">
-                {/* imagem do comentário - abre o modal */}
-                {new Date(e.dataEvento) < Date.now() ? (
-                  <img
-                    className="tbal-data__icon"
-                    // idevento={e.idEvento}
-                    src={comentaryIcon}
-                    alt=""
-                    onClick={() => {
-                      fnShowModal(e.idEvento);
-                    }}
-                  />
-                ) : null}
+                <img
+                  className="tbal-data__icon"
+                  idevento={e.idEvento}
+                  src={comentaryIcon}
+                  alt=""
+                  onClick={() => fnShowModal(e.idEvento)}
+                />
                 <ToggleSwitch
                   toggleActive={e.situacao}
                   manipulationFunction={
@@ -59,7 +55,7 @@ const Table = ({ dados, fnConnect = null, fnShowModal = null }) => {
                           fnConnect(
                             e.idEvento,
                             e.situacao ? "unconnect" : "connect",
-                            e.idPresencaEvento //parâmetro opcional
+                            e.idPresencasEvento //parâmetro opcional
                           );
                         }
                       : () => {

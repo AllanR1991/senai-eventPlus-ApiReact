@@ -93,7 +93,6 @@ export default function EventosPaage(props) {
           descricao: frmEditData.descricao,
           idInstituicao: frmEditData.idInstituicao,
           idTipoEvento: frmEditData.idTipoEvento,
-          horarioEvento: "00:00:00"
         }
       );
 
@@ -222,7 +221,6 @@ export default function EventosPaage(props) {
         descricao: descricaoEvento,
         idInstituicao: instituicao, //por enquanto chumbado
         idTipoEvento: tipoEvento,
-        horarioEvento: "00:00:00"
       });
       // setFrmEditData({});//limpa os dados do formulário
       const newListEvents = await api.get(eventsResource);
@@ -268,7 +266,7 @@ export default function EventosPaage(props) {
     const arrAux = [];
 
     arrEvents.forEach((event) => {
-      arrAux.push({ value: event.idTipoEvento, text: event.titulo });
+      arrAux.push({ value: event.idTiposEvento, text: event.tipoEvento });
     });
 
     return arrAux;
