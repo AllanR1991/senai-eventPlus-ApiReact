@@ -45,8 +45,8 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Controllers
         /// <response code="200">Lista de comentário exíbido com sucesso.</response>
         /// <response code="400">Não foi possivel exíbir a lista.</response>
         [HttpGet]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
+        //[ProducesResponseType(200)]
+        //[ProducesResponseType(400)]
         public IActionResult ListaTodos()
         {
             try

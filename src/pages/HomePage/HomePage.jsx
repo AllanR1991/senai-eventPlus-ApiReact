@@ -7,6 +7,7 @@ import VisionSection from "../../components/VisionSection/VisionSection";
 import ContactSection from "../../components/ContactSection/ContactSection";
 import Title from "../../components/Title/Title";
 import NextEvent from "../../components/NextEvent/NextEvent";
+import PastEvent from "../../components/PastEvent/PastEvent";
 import Container from "../../components/Container/Container";
 import api from "../../Services/Service";
 import Notification from "../../components/Notification/Notification";
@@ -16,6 +17,7 @@ import { UserContext } from "../../context/AuthContext";
 
 const HomePage = () => {
   const [eventos, setEventos] = useState([]);
+  const [nextEventsLogado, setNextEventsLogado] = useState([]);
   const [nextEvents, setNextEvents] = useState([]);
   const [pastEvents, setPastEvents] = useState([]);
   const [notifyUser, setNotifyUser] = useState(); //Componente Notification
@@ -26,10 +28,11 @@ const HomePage = () => {
   useEffect(() => {
     getNextEvents(); //chama a função
     getPastEvents();
+    getNextEventsLogado();
   }, []);
 
   const token = JSON.parse(localStorage.getItem('token'));
-
+  console.log(userData.role)
   const verificaPresenca = (arrAllEvents, eventsUser) => {
 
     for (let x = 0; x < arrAllEvents.length; x++) {
@@ -54,29 +57,37 @@ const HomePage = () => {
     return arrAllEvents;
   };
 
-  async function getNextEvents() {
+  async function getNextEventsLogado() {
     try {
       //debugger
       //console.log("Dentro do nextEvents = " ,token.userId)
 
+      
       const todosEventos = await api.get(nextEventResource);
       const meusEventos = await api.get(
         `${myEventsResource}/${token.userId}`
       );
-      debugger
+      //debugger
       const eventosMarcados = verificaPresenca(
         todosEventos.data,
         meusEventos.data
       );
 
       console.log("eventos marcados  = ", eventosMarcados);
-      setNextEvents(eventosMarcados);
+      setNextEventsLogado(eventosMarcados);
 
 
     } catch (error) {
       console.log("não trouxe os próximos eventos, verifique lá!");
 
     }
+  }
+
+  async function getNextEvents(){
+    const promise = await api.get(nextEventResource);
+      const dados = await promise.data;
+      // console.log(dados);
+      setNextEvents(dados);
   }
 
   async function handleConnect(eventId, idUsuario, confirmacao, presencaId = null,) {
@@ -90,7 +101,7 @@ const HomePage = () => {
           idEvento: eventId,
         });
         if (promise.status === 201) {
-          getNextEvents()
+          getNextEventsLogado()
           alert("Presença confirmada, parabéns");
         }
       } catch (error) { }
@@ -102,7 +113,7 @@ const HomePage = () => {
         `${presencesEventResource}/${presencaId}`
       );
       if (unconnected.status === 204) {
-        getNextEvents()
+        getNextEventsLogado()
         alert("Desconectado do evento");
       }
     } catch (error) {
@@ -145,7 +156,9 @@ const HomePage = () => {
           <Title titleText={"Próximos Eventos"} />
 
           <div className="events-box">
-            {nextEvents.map((e) => {
+            {
+            userData.role === "Administrador" || userData.role === "Comum" ?
+            nextEventsLogado.map((e) => {
               //console.log(e)
               return (
                 <NextEvent
@@ -159,9 +172,24 @@ const HomePage = () => {
                   idUsuario={token.userId}
                   fnConnect={handleConnect}
                   nomeBotao={e.botao}
-                />
+                />                
               );
-            })}
+            }):
+            nextEvents.map((e) => {
+              console.log(e)
+              return (
+                <NextEvent
+                  key={e.idEvento}
+                  title={e.nomeEvento}
+                  description={e.descricao}
+                  eventDate={e.dataEvento}
+                  idEvent={e.idEvento}                  
+                  //fnConnect={handleConnect}
+                  nomeBotao={e.botao}
+                />                
+              );
+            })            
+            }
           </div>
         </Container>
       </section>
@@ -173,12 +201,13 @@ const HomePage = () => {
           <div className="events-box">
             {pastEvents.map((e) => {
               return (
-                <NextEvent
+                <PastEvent
                   key={e.idEvento}
                   title={e.nomeEvento}
                   description={e.descricao}
                   eventDate={e.dataEvento}
                   idEvent={e.idEvento}
+                  buttonLink={`/detalhes-evento/${e.idEvento}`}
                   nomeBotao="Visualizar"
                 />
               );

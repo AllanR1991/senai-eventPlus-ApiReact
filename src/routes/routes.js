@@ -11,7 +11,7 @@ import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import { PrivateRoute } from "./PrivateRoute";
 import EventosAlunoPage from "../pages/EventosAlunoPage/EventosAlunoPage";
-import EventosAnterioresPage from "../pages/EventosAnterioresPage/EventosAnterioresPage";
+import DetalhesEventoPage from "../pages/DetalheEvento/DetalheEvento";
 //import EventosAnterioresPage from "../pages/EventosAnterioresPage/EventosAnterioresPage";
 
 
@@ -24,7 +24,7 @@ const Rotas = () => {
       <Routes>
         <Route element={<HomePage />} path="/" exact />
 
-        <Route element={<EventosAnterioresPage/>} path="/detahles-evento/:idEvento"/>
+        <Route element={<DetalhesEventoPage/>} path="/detalhes-evento/:idEvento"/>
 
         <Route
           path="/tipo-eventos"
@@ -35,18 +35,11 @@ const Rotas = () => {
           }
         />
         
-        <Route
-          path="/eventos-anteriores"
-          element={
-            <PrivateRoute redirectTo="/">
-              <EventosAnterioresPage />
-            </PrivateRoute>
-          }
-        />
+        
 
         <Route
           path="/eventos"
-          element={
+          element=  {
             <PrivateRoute redirectTo="/">
               <EventosPage />
             </PrivateRoute>

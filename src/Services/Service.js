@@ -48,13 +48,15 @@ export const institutionResource = '/Instituicao';
  */
 export const loginResource = '/Login';
 
+export const detailsEventResource = '/DetalhesEvento'
+
 const apiPort = '7183';
 const localApiUri = `https://localhost:${apiPort}/api`;
-const externallApiUri = `https://eventwebapi-julia.azurewebsites.net/api`;
+const externallApiUri = `https://eventplus-allanrs.azurewebsites.net/api`;
 // const externalApiUri = null;
 
 const api = axios.create({
-    baseURL: localApiUri
+    baseURL: externallApiUri
 });
 
 

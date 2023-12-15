@@ -54,6 +54,8 @@ builder.Services.AddAuthentication(options =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
@@ -138,11 +140,14 @@ app.UseSwagger(options =>
 {
     options.SerializeAsV2 = true;
 });
-// Configure the HTTP request pipeline.
+
+app.UseSwaggerUI();
+
+//Para atender à interface do usuário do Swagger na raiz do aplicativo
 app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    //options.RoutePrefix = string.Empty;
+    options.RoutePrefix = string.Empty;
 });
 
 app.UseCors("CorsPolicy");
