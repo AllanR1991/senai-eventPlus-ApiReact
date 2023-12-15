@@ -1,7 +1,7 @@
 import React from 'react';
 import './TableDe.css'
 import "react-tooltip/dist/react-tooltip.css";
-
+import { dateFormateDbToView } from "../../../Utils/stringFunctions";
 
 const TableDe = ({ evento, descricao, data, comentarios, tipoEvento }) => {
     return (
@@ -28,7 +28,7 @@ const TableDe = ({ evento, descricao, data, comentarios, tipoEvento }) => {
                     <th className="table-data__head-title table-data__head-title--big font-color">{evento}</th>
                     <th className="table-data__head-title table-data__head-title--big font-color" >{descricao}</th>
                     <th className="table-data__head-title table-data__head-title--big font-color">{tipoEvento}</th>
-                    <th className="table-data__head-title table-data__head-title--big font-color">{data}</th>
+                    <th className="table-data__head-title table-data__head-title--big font-color">{dateFormateDbToView(data)}</th>
                 </tr>
             </thead>
 

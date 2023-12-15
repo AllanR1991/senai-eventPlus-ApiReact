@@ -35,7 +35,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 466px; /* apagar */
+    height: 100%; /* apagar */
     margin-top: 60px;
     color: var(--color-white);
     /* border: 1px solid white; */
