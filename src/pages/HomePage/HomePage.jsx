@@ -1,4 +1,4 @@
-import React, { useContext,useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./HomePage.css";
 
 import Banner from "../../components/Banner/Banner";
@@ -10,7 +10,7 @@ import NextEvent from "../../components/NextEvent/NextEvent";
 import Container from "../../components/Container/Container";
 import api from "../../Services/Service";
 import Notification from "../../components/Notification/Notification";
-import { nextEventResource, pastEentResource, myEventsResource } from "../../Services/Service";
+import { nextEventResource, pastEentResource, myEventsResource, presencesEventResource } from "../../Services/Service";
 import { UserContext } from "../../context/AuthContext";
 
 
@@ -27,63 +27,87 @@ const HomePage = () => {
     getNextEvents(); //chama a função
     getPastEvents();
   }, []);
-  
+
+  const token = JSON.parse(localStorage.getItem('token'));
+
   const verificaPresenca = (arrAllEvents, eventsUser) => {
-          
+
     for (let x = 0; x < arrAllEvents.length; x++) {
       //para cada evento principal
+      arrAllEvents[x].situacao = false;
+      arrAllEvents[x].botao = "Conectar";
       for (let i = 0; i < eventsUser.length; i++) {
         //procurar a correspondência em minhas presenças
         if (arrAllEvents[x].idEvento === eventsUser[i].evento.idEvento) {
           arrAllEvents[x].situacao = true;
           arrAllEvents[x].idPresencasEvento = eventsUser[i].idPresencasEvento;
+          arrAllEvents[x].botao = "Desconectar";
           break; //paro de procurar para o evento principal atual
+        } else {
+          arrAllEvents[x].situacao = false;
+          arrAllEvents[x].botao = "Conectar";
         }
       }
+      //console.log("Verifica prewsença = ", arrAllEvents[x])
     }
     //retorna todos os eventos marcados com a presença do usuário
     return arrAllEvents;
   };
-  
+
   async function getNextEvents() {
     try {
       //debugger
-      console.log("Dentro do nextEvents = " ,userData.userId)
+      //console.log("Dentro do nextEvents = " ,token.userId)
 
       const todosEventos = await api.get(nextEventResource);
       const meusEventos = await api.get(
-        `${myEventsResource}/3c06d1ee-e3a2-4597-a843-5610f7c4e664`
-      );  
-      /*
-      ${userData.userId}
-      */
-      console.log("Meus eventos = ",meusEventos.data);
-      console.log("Tamanho meus eventos = ",meusEventos.data.length);
-      console.log("todos eventos = ",todosEventos.data);
-      console.log("Tamanho de todos eventos = ",todosEventos.data.length);
+        `${myEventsResource}/${token.userId}`
+      );
+      debugger
       const eventosMarcados = verificaPresenca(
         todosEventos.data,
         meusEventos.data
       );
-     
+
       console.log("eventos marcados  = ", eventosMarcados);
       setNextEvents(eventosMarcados);
-      
-      // const promise = await api.get(nextEventResource);
-      // const dados = await promise.data;
-      // console.log(dados);
-      // setNextEvents(dados); //atualiza o state
+
 
     } catch (error) {
       console.log("não trouxe os próximos eventos, verifique lá!");
-      // setNotifyUser({
-      //   titleNote: "Erro",
-      //   textNote: `Não foi possível carregar os próximos eventos. Verifique a sua conexão com a internet`,
-      //   imgIcon: "danger",
-      //   imgAlt:
-      //   "Imagem de ilustração de erro. Rapaz segurando um balão com símbolo x.",
-      //   showMessage: true,
-      // });
+
+    }
+  }
+
+  async function handleConnect(eventId, idUsuario, confirmacao, presencaId = null,) {
+    console.log(eventId, idUsuario, confirmacao, presencaId)
+    if (confirmacao === false) {
+      try {
+        //connect
+        const promise = await api.post(presencesEventResource, {
+          situacao: true,
+          idUsuario: idUsuario,
+          idEvento: eventId,
+        });
+        if (promise.status === 201) {
+          getNextEvents()
+          alert("Presença confirmada, parabéns");
+        }
+      } catch (error) { }
+      return;
+    }
+    // unconnect - aqui seria o else
+    try {
+      const unconnected = await api.delete(
+        `${presencesEventResource}/${presencaId}`
+      );
+      if (unconnected.status === 204) {
+        getNextEvents()
+        alert("Desconectado do evento");
+      }
+    } catch (error) {
+      console.log("Erro ao desconecar o usuário do evento");
+      console.log(error);
     }
   }
 
@@ -107,10 +131,10 @@ const HomePage = () => {
     }
   }
 
-  
-  
+
+
   return (
-    
+
     <MainContent>
       {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
       <Banner />
@@ -118,10 +142,11 @@ const HomePage = () => {
       {/* PRÓXIMOS EVENTOS */}
       <section className="proximos-eventos">
         <Container>
-         <Title titleText={"Próximos Eventos"} />
+          <Title titleText={"Próximos Eventos"} />
 
           <div className="events-box">
             {nextEvents.map((e) => {
+              //console.log(e)
               return (
                 <NextEvent
                   key={e.idEvento}
@@ -129,7 +154,11 @@ const HomePage = () => {
                   description={e.descricao}
                   eventDate={e.dataEvento}
                   idEvent={e.idEvento}
-                  nomeBotao="Conectar"
+                  situacao={e.situacao}
+                  presencaId={e.idPresencasEvento}
+                  idUsuario={token.userId}
+                  fnConnect={handleConnect}
+                  nomeBotao={e.botao}
                 />
               );
             })}
@@ -139,7 +168,7 @@ const HomePage = () => {
 
       <section className="anterio-eventos">
         <Container>
-         <Title titleText={"Eventos anteriores"} />
+          <Title titleText={"Eventos anteriores"} />
 
           <div className="events-box">
             {pastEvents.map((e) => {

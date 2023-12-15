@@ -1,16 +1,18 @@
 import React from "react";
 import "./NextEvent.css";
-
+import api from "../../Services/Service";
 import { Tooltip } from "react-tooltip";
+import {presencesEventResource} from "../../Services/Service";
 
 // importar a função lá do arquivo stringFunction (destructuring)
 import { dateFormatDbToView } from "../../Utils/stringFunctions";
 
-const NextEvent = ({ title,nomeBotao, description, eventDate, idEvent }) => {
+const NextEvent = ({ title,nomeBotao,fnConnect, description, eventDate, idEvent, situacao, presencaId,idUsuario }) => {
   async function conectar(idEvent) {
     // dá pra usar a prop idEvent? testar
     alert(`Chamar o recurso para conectar: ${idEvent}`);
   }
+
   return (
     <article className="event-card">
       <h2 className="event-card__title">{title}</h2>
@@ -33,12 +35,14 @@ const NextEvent = ({ title,nomeBotao, description, eventDate, idEvent }) => {
 
       <a
         onClick={() => {
-          conectar(idEvent);
+          fnConnect(idEvent,idUsuario,situacao,presencaId);
         }}
         className="event-card__connect-link"
       >
         {nomeBotao}
       </a>
+
+      <p>{situacao}</p>
     </article>
   );
 };

@@ -57,7 +57,8 @@ const EventosAlunoPage = () => {
           todosEventos.data,
           meusEventos.data
         );
-
+        
+        console.log("EventosMarcados em pagina eventosAlunoPage =", eventosMarcados);
         setEventos(eventosMarcados);
 
         // console.clear();

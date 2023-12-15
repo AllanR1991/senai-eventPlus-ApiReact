@@ -21,8 +21,8 @@ namespace senai_eventPlus_webApi_codeFirst_jwt.Contexts
         //  Configurando o acesso ao banco de dados.
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer("Server = ALLANR1991-DESK\\SQLEXPRESS; Database = EventPlus_CodeFirst; User Id = sa; pwd = 123456; TrustServerCertificate=True;");
-            optionsBuilder.UseSqlServer("Server = NOTE13-S14; Database = EventPlus_CodeFirst; User Id = sa; pwd = Senai@134; TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Server = ALLANR1991-DESK\\SQLEXPRESS; Database = EventPlus_CodeFirst; User Id = sa; pwd = 123456; TrustServerCertificate=True;");
+            //optionsBuilder.UseSqlServer("Server = NOTE13-S14; Database = EventPlus_CodeFirst; User Id = sa; pwd = Senai@134; TrustServerCertificate=True;");
             base.OnConfiguring(optionsBuilder);
 
             //string conexão nuvem Azure
