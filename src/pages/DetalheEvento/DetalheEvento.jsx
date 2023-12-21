@@ -37,7 +37,7 @@ const DetalhesEventoPage = () => {
     async function listarComentario(){
         
         const getEvento = await api.get(`${eventsResource}/${idEvento}`)
-
+        console.log(getEvento);
         const listaDeComentario = await api.get(commentaryEventResource);
 
         const comentariosOfensasFiltrados = await listaDeComentario.data.filter(

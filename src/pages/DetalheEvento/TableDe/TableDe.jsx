@@ -28,7 +28,10 @@ const TableDe = ({ evento, descricao, data, comentarios, tipoEvento }) => {
                     <th className="table-data__head-title table-data__head-title--big font-color">{evento}</th>
                     <th className="table-data__head-title table-data__head-title--big font-color" >{descricao}</th>
                     <th className="table-data__head-title table-data__head-title--big font-color">{tipoEvento}</th>
-                    <th className="table-data__head-title table-data__head-title--big font-color">{dateFormateDbToView(data)}</th>
+                    <th className="table-data__head-title table-data__head-title--big font-color">
+                        {/* {data} */}
+                        {dateFormateDbToView(data)}
+                    </th>
                 </tr>
             </thead>
 
